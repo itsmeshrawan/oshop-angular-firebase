@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
+import { DataTableModule } from 'angular-4-data-table';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -48,6 +49,7 @@ import { ProductService } from './product.service';
     BrowserModule,
     FormsModule,
     CustomFormsModule,
+    DataTableModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -63,13 +65,18 @@ import { ProductService } from './product.service';
       { path: 'my/orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
 
       {
-        path: 'admin/products',
-        component: AdminProductsComponent,
+        path: 'admin/products/new',
+        component: ProductFormComponent,
         canActivate: [AuthGuard, AdminAuthGuard]
       },
       {
-        path: 'admin/products/new',
+        path: 'admin/products/:id',
         component: ProductFormComponent,
+        canActivate: [AuthGuard, AdminAuthGuard]
+      },
+      {
+        path: 'admin/products',
+        component: AdminProductsComponent,
         canActivate: [AuthGuard, AdminAuthGuard]
       },
       {
