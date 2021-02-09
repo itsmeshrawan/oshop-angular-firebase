@@ -1,3 +1,5 @@
+import { Product } from './models/Product';
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
@@ -10,7 +12,7 @@ export class ProductService {
     return this.db.list('/products').push(product);
   }
 
-  getAll() {
+  getAll(): Observable<Product[]> {
     return this.db.list('/products');
   }
 
