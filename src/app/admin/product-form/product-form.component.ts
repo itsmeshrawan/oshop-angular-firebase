@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CategoryService } from '../../category.service';
-import { ProductService } from '../../product.service';
+import { CategoryService } from 'shared/services/category.service';
+import { ProductService } from 'shared/services/product.service';
 import 'rxjs/add/operator/take'; // we use take operator to unsubscribe obeservable
 
 @Component({
