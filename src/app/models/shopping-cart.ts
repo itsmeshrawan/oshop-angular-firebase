@@ -1,4 +1,7 @@
+import { Product } from './Product';
 import { ShoppingCartItem } from './shopping-cart-item';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/reduce';
 
 export class ShoppingCart {
     items: ShoppingCartItem[] = [];
@@ -10,11 +13,15 @@ export class ShoppingCart {
         }
     }
 
+    getQuantity(product: Product) {
+        const item = this.itemsMap[product.$key];
+        return item ? item.quantity : 0;
+    }
+
     get totalPrice() {
-        let sum = 0;
-        for (const productId of this.items)
-            sum += this.items[productId].totalPrice;
-        return sum;
+        return this.items
+            .map(shopItem => shopItem.totalPrice)
+            .reduce((price1, price2) => price1 + price2);
     }
 
     get totalItemsCount() {
