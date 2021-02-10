@@ -1,6 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
+import { ShoppingCart } from './../models/shopping-cart';
 import { ShoppingCartService } from './../shopping-cart.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
@@ -12,40 +12,40 @@ import { ProductService } from './../product.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ProductsComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[];
   category: string;
-  cart: any;
-  subscription: Subscription;
+  cart$: any;
 
   constructor(
-    route: ActivatedRoute,
-    productService: ProductService,
+    private route: ActivatedRoute,
+    private productService: ProductService,
     private shoppingCartService: ShoppingCartService
-  ) {
-    productService
+  ) { }
+
+  async ngOnInit() {
+    this.cart$ = await this.shoppingCartService.getCart();
+
+    this.populateProduct();
+  }
+
+  private populateProduct() {
+    this.productService
       .getAll()
       .switchMap(products => {
         this.products = products;
-        return route.queryParamMap;
+        return this.route.queryParamMap;
       })
       .subscribe(params => {
         this.category = params.get('category');
-
-        this.filteredProducts = (this.category) ?
-          this.products.filter(p => p.category === this.category) :
-          this.products;
+        this.applyFilter();
       });
   }
 
-  async ngOnInit() {
-    this.subscription = (await this.shoppingCartService.getCart())
-      .subscribe(cart => this.cart = cart);
+  private applyFilter() {
+    this.filteredProducts = (this.category) ?
+      this.products.filter(p => p.category === this.category) :
+      this.products;
   }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
 }

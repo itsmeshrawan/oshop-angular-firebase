@@ -6,10 +6,13 @@ import 'rxjs/add/operator/reduce';
 export class ShoppingCart {
     items: ShoppingCartItem[] = [];
 
-    constructor(public itemsMap: { [productId: string]: ShoppingCartItem }) {
+    constructor(private itemsMap: { [productId: string]: ShoppingCartItem }) {
+        this.itemsMap = itemsMap || {};
+
         for (const productId in itemsMap) {
             const item = itemsMap[productId];
-            this.items.push(new ShoppingCartItem(item.product, item.quantity));
+            this.items.push(new ShoppingCartItem({ ...item, $key: productId }));
+            // (...item) called spred opration means send item object to the shopping cart items constructor
         }
     }
 
@@ -19,9 +22,12 @@ export class ShoppingCart {
     }
 
     get totalPrice() {
-        return this.items
-            .map(shopItem => shopItem.totalPrice)
-            .reduce((price1, price2) => price1 + price2);
+        let sum = 0;
+        for (const productId of this.items) {
+            // sum += this.items[productId].totalPrice;
+            sum += productId.totalPrice;
+        }
+        return sum;
     }
 
     get totalItemsCount() {
