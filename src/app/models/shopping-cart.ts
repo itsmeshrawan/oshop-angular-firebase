@@ -1,4 +1,4 @@
-import { Product } from './Product';
+import { Product } from './product';
 import { ShoppingCartItem } from './shopping-cart-item';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/reduce';
