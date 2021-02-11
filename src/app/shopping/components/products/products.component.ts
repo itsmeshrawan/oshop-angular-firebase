@@ -1,10 +1,9 @@
-import { ShoppingCartService } from 'shared/services/shopping-cart.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
-
 import { Product } from 'shared/models/product';
 import { ProductService } from 'shared/services/product.service';
+import { ShoppingCartService } from 'shared/services/shopping-cart.service';
 
 @Component({
   selector: 'app-products',
